@@ -1,0 +1,9 @@
+{"MerchantName":"Sainsburys","MerchantNumber":"001","crdNumber":"123456789","txnType":"Authorization","TxnAmount":"100","WindowId":"1","Business":"Retail","component":"treatment","EventId": "0001"),
+{"MerchantName":"Sainsburys","MerchantNumber":"001","crdNumber":"123456789","txnType":"Authorization","TxnAmount":"20%","WindowId":"1","Business":"Retail","component":"Movement","EventId": "0001"),
+{"MerchantName":"Sainsburys","MerchantNumber":"001","crdNumber":"123456789","txnType":"Authorization","TxnAmount":"100","WindowId":"1","Business":"Retail","component":"Aggregate","EventId": "0001"),
+{"MerchantName":"Sainsburys","MerchantNumber":"001","crdNumber":"123456789","txnType":"Authorization","TxnAmount":"100","WindowId":"1","Business":"Retail","component":"Settlement","EventId": "0001")
+
+issuer -20
+acq-.001
+network
+
