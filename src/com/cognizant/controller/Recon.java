@@ -24,7 +24,7 @@ import com.cognizant.event.bean.EventsBO;
 
 
 	@RestController
-	public class Recon { 
+	public class Recon { 	  
 	    
 	    private List<EventsBO> getReconsileData()throws IOException
 	    {
