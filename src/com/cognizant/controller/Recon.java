@@ -3,67 +3,28 @@ package com.cognizant.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.atomic.AtomicLong;
 
-import net.minidev.json.JSONObject;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.codehaus.jackson.JsonFactory;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ObjectNode;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cognizant.event.bean.Event;
 import com.cognizant.event.bean.EventsBO;
-import com.cognizant.event.bean.Fee;
-import com.cognizant.event.bean.Transaction;
-import com.google.gson.Gson;
+
 
 	@RestController
-	public class Recon {   
-		
-		ThreadLocalRandom random;
-		
-		String url = "http://localhost:8080/events";
-		
-		HttpClient httpClient = HttpClientBuilder.create().build();
-		
-		HttpPost httpPost = new HttpPost(url);
-		
-		HttpResponse httpResponse;
-		
-		Gson gson = new Gson();
-		
-		StringEntity request;
-		
-
-	    
-	    
-	   /* private Event getReconsileData()
-	    {
-	       	         
-	        Transaction transaction = new Transaction("0001","Authorization","native");
-	        Fee fee = new Fee(100,90,5,5);
-	        Event event = new Event(transaction,fee) ; 
-	        
-	        return event;
-	    }*/
+	public class Recon { 
 	    
 	    private List<EventsBO> getReconsileData()throws IOException
 	    {
@@ -78,9 +39,22 @@ import com.google.gson.Gson;
 			events.setCrdNumber("123456789");
 			events.setMerchantName("Sainsburys");
 			events.setMerchantNumber("001");
-			events.setTxnAmount("100");
+			events.setTxnAmount("0.50");
 			events.setWindowId("1");
 			eventsBO.add(events);
+			
+			EventsBO eventsSdi = new EventsBO();
+	    	
+			
+			eventsSdi.setComponent("SDI");
+			eventsSdi.setEventId(11111111);
+			eventsSdi.setBusiness("Retail");
+			eventsSdi.setCrdNumber("123456789");
+			eventsSdi.setMerchantName("Sainsburys");
+			eventsSdi.setMerchantNumber("001");
+			eventsSdi.setTxnAmount("101");
+			eventsSdi.setWindowId("1");
+			eventsBO.add(eventsSdi);
 			
 			EventsBO eventsMV = new EventsBO();
 	    	
@@ -91,7 +65,7 @@ import com.google.gson.Gson;
 			eventsMV.setCrdNumber("123456789");
 			eventsMV.setMerchantName("Sainsburys");
 			eventsMV.setMerchantNumber("001");
-			eventsMV.setTxnAmount("100");
+			eventsMV.setTxnAmount("101");
 			eventsMV.setWindowId("1");
 			eventsBO.add(eventsMV);
 			
@@ -104,7 +78,7 @@ import com.google.gson.Gson;
 			eventsAgree.setCrdNumber("123456789");
 			eventsAgree.setMerchantName("Sainsburys");
 			eventsAgree.setMerchantNumber("001");
-			eventsAgree.setTxnAmount("100");
+			eventsAgree.setTxnAmount("101");
 			eventsAgree.setWindowId("1");
 			eventsBO.add(eventsAgree);
 			
@@ -116,135 +90,158 @@ import com.google.gson.Gson;
 			eventsSettle.setCrdNumber("123456789");
 			eventsSettle.setMerchantName("Sainsburys");
 			eventsSettle.setMerchantNumber("001");
-			eventsSettle.setTxnAmount("100");
+			eventsSettle.setTxnAmount("101");
 			eventsSettle.setWindowId("1");
 			eventsBO.add(eventsSettle);
 			
-	        
+			EventsBO events1 = new EventsBO();
+	    	
+			
+			events1.setComponent("treatment");
+			events1.setEventId(11111111);
+			events1.setBusiness("Retail");
+			events1.setCrdNumber("1234567890");
+			events1.setMerchantName("Sainsburys");
+			events1.setMerchantNumber("001");
+			events1.setTxnAmount("0.2");
+			events1.setWindowId("1");
+			eventsBO.add(events1);
+			
+			EventsBO eventsSdi1 = new EventsBO();
+	    	
+			
+			eventsSdi1.setComponent("SDI");
+			eventsSdi1.setEventId(11111111);
+			eventsSdi1.setBusiness("Retail");
+			eventsSdi1.setCrdNumber("1234567890");
+			eventsSdi1.setMerchantName("Sainsburys");
+			eventsSdi1.setMerchantNumber("001");
+			eventsSdi1.setTxnAmount("100");
+			eventsSdi1.setWindowId("1");
+			eventsBO.add(eventsSdi1);
+			
+			EventsBO eventsMV1 = new EventsBO();
+	    	
+			
+			eventsMV1.setComponent("Movement");
+			eventsMV1.setEventId(11111111);
+			eventsMV1.setBusiness("Retail");
+			eventsMV1.setCrdNumber("1234567890");
+			eventsMV1.setMerchantName("Sainsburys");
+			eventsMV1.setMerchantNumber("001");
+			eventsMV1.setTxnAmount("100");
+			eventsMV1.setWindowId("1");
+			eventsBO.add(eventsMV1);
+			
+			EventsBO eventsAgree1 = new EventsBO();
+	    	
+			
+			eventsAgree1.setComponent("Aggregate");
+			eventsAgree1.setEventId(11111111);
+			eventsAgree1.setBusiness("Retail");
+			eventsAgree1.setCrdNumber("1234567890");
+			eventsAgree1.setMerchantName("Sainsburys");
+			eventsAgree1.setMerchantNumber("001");
+			eventsAgree1.setTxnAmount("100");
+			eventsAgree1.setWindowId("1");
+			eventsBO.add(eventsAgree1);
+			
+			EventsBO eventsSettle1 = new EventsBO();	    	
+			
+			eventsSettle1.setComponent("Settlement");
+			eventsSettle1.setEventId(11111111);
+			eventsSettle1.setBusiness("Retail");
+			eventsSettle1.setCrdNumber("1234567890");
+			eventsSettle1.setMerchantName("Sainsburys");
+			eventsSettle1.setMerchantNumber("001");
+			eventsSettle1.setTxnAmount("102");
+			eventsSettle1.setWindowId("1");
+			eventsBO.add(eventsSettle1);
+			
 	        return eventsBO;
 	    }
 	    
-	    @RequestMapping(value = "/recon")
-	    public String getReconsileJSON(@RequestParam(value="name", defaultValue="World")String name) throws JsonParseException, IOException
+	    @RequestMapping(value = "/recon", params = "windowId", method = RequestMethod.GET)
+	    public String getReconsileJSON(@RequestParam(value="windowId")String windowId) throws JsonParseException, IOException
 	    {
 	        boolean tempFlag = true;
-	        String treatementTxnAmount = null;
-	        String movementTxnAmount = null;
-	        String aggregateTxnAmount = null;
-	        String settlementTxnAmount = null;
-	        String result = null;
-	    	List<EventsBO> eventsBO = getReconsileData();
-	    	Set<String> amount = new HashSet<String>();
+	        String treatementTxnAmount = null;	       
+	        StringBuffer result = new StringBuffer();	        
+	    	List<EventsBO> eventsBO = getReconsileData();	    	
+	    	Set<String> amount = null;  
+	    	Map<String,Map<String,String>> eventCrdNumberData = new HashMap<String,Map<String,String>>();
+	    	Map<String,String> eventComponent = null;
+	    	Map<String,Set<String>> eventComponentTrnAmt = null;
 	    	
-	    	for (int i=0; i<eventsBO.size(); i++) 
-	    	{ 
-	    	    if(tempFlag && eventsBO.get(i).getComponent().equalsIgnoreCase("treatment")){
-	    	    	tempFlag =true;
-	    	    	treatementTxnAmount = eventsBO.get(i).getTxnAmount();
-	    	    	amount.add(treatementTxnAmount);
-	    	    }else if(tempFlag && eventsBO.get(i).getComponent().equalsIgnoreCase("Movement")){
-	    	    	tempFlag =true;
-	    	    	movementTxnAmount = eventsBO.get(i).getTxnAmount();
-	    	    	amount.add(movementTxnAmount);
-	    	    }else if(tempFlag && eventsBO.get(i).getComponent().equalsIgnoreCase("Aggregate")){
-	    	    	tempFlag =true;
-	    	    	aggregateTxnAmount = eventsBO.get(i).getTxnAmount();
-	    	    	amount.add(aggregateTxnAmount);
-	    	    }else if(tempFlag && eventsBO.get(i).getComponent().equalsIgnoreCase("Settlement")){
-	    	    	tempFlag =true;
-	    	    	settlementTxnAmount = eventsBO.get(i).getTxnAmount();
-	    	    	amount.add(settlementTxnAmount);
-	    	    }else{
-	    	    	tempFlag =false;
-	    	    	treatementTxnAmount = "";
-	    	        movementTxnAmount = "";
-	    	        aggregateTxnAmount = "";
-	    	        settlementTxnAmount = "";
-	    	    	result =  "Fail";
+	    	
+	    	for (int i=0; i<eventsBO.size(); i++) {    		
+	    		
+	    		if(eventsBO.get(i).getComponent().equalsIgnoreCase("treatment")){
+	    			eventComponent = new HashMap<String,String>();
+	    			eventComponent.put(eventsBO.get(i).getComponent(), eventsBO.get(i).getTxnAmount());
+	    	    }else if(eventsBO.get(i).getComponent().equalsIgnoreCase("SDI")){
+	    	    	eventComponent.put(eventsBO.get(i).getComponent(), eventsBO.get(i).getTxnAmount());
+	    	    }else if(eventsBO.get(i).getComponent().equalsIgnoreCase("Movement")){
+	    	    	eventComponent.put(eventsBO.get(i).getComponent(), eventsBO.get(i).getTxnAmount());
+	    	    }else if(eventsBO.get(i).getComponent().equalsIgnoreCase("Aggregate")){
+	    	    	eventComponent.put(eventsBO.get(i).getComponent(), eventsBO.get(i).getTxnAmount());
+	    	    }else if(eventsBO.get(i).getComponent().equalsIgnoreCase("Settlement")){
+	    	    	eventComponent.put(eventsBO.get(i).getComponent(), eventsBO.get(i).getTxnAmount());
 	    	    }
+	    	    eventCrdNumberData.put(eventsBO.get(i).getCrdNumber(), eventComponent);
 	    	}
 	    	
-	    	if(tempFlag && (amount.size()==1) && amount.contains(treatementTxnAmount) ){
-	    		result =  "Pass";
-	    	}else{
-	    		result =  "Fail";
-	    	}
+	    	for (Map.Entry<String,Map<String,String>> entry : eventCrdNumberData.entrySet()){
+	    		
+	    		Map<String,String> entryComponent = entry.getValue();
+	    		amount = new HashSet<String>();
+	    		for (Map.Entry<String,String> entryComponentValues : entryComponent.entrySet()){	    			
+	    			if(tempFlag && entryComponentValues.getKey().contains("treatment")){
+	    				eventComponentTrnAmt = new HashMap<String,Set<String>>();	    				
+	    				tempFlag =true ;
+	    				treatementTxnAmount = entryComponentValues.getValue();
+	    			}else if(tempFlag && entryComponentValues.getKey().contains("SDI")){
+	    				tempFlag =true ;
+	    				amount.add(entryComponentValues.getValue());
+	    				eventComponentTrnAmt.put(entry.getKey(), amount);
+	    			}else if(tempFlag && entryComponentValues.getKey().contains("Movement")){
+	    				tempFlag =true ;
+	    				amount.add(entryComponentValues.getValue());
+	    				eventComponentTrnAmt.put(entry.getKey(), amount);
+	    			}else if(tempFlag && entryComponentValues.getKey().contains("Aggregate")){
+	    				tempFlag =true ;
+	    				amount.add(entryComponentValues.getValue());
+	    				eventComponentTrnAmt.put(entry.getKey(), amount);
+	    			}else if(tempFlag && entryComponentValues.getKey().contains("Settlement")){
+	    				tempFlag =true ;
+	    				amount.add(entryComponentValues.getValue());
+	    				eventComponentTrnAmt.put(entry.getKey(), amount);
+	    			}else{
+	    				tempFlag =false ;
+	    			}
+	    		}
+	    		
+	    		if(tempFlag && amount.size()==1 ){
+	    			Double treatementAmount = Double.parseDouble(treatementTxnAmount);
+	    			
+	    			Double pricedAmount = 0.0;
+	    			
+	    			if(treatementAmount < 100)
+	    				pricedAmount = treatementAmount - (treatementAmount * 0.02);
+	    			else
+	    				pricedAmount = treatementAmount - (treatementAmount * 0.05);
+	    			result.append("passed -> " + " Amount -> " + pricedAmount + " CardNumber ->  " + entry.getKey());
+	    			
+	    		}else{
+	    			result.append("failed");
+	    		}
+	    		result.append("</br>");
+	    	}	
 	    	
-	    	return result;
-	    	
-	    	/*Event event = getReconsileData();
-	    	
-	    	JsonFactory jsonFactory = new JsonFactory();
-			JsonParser jp = jsonFactory.createJsonParser(event.toString().trim().replaceFirst("\ufeff", ""));
-			
-			//JsonGenerator jsonGen = jsonFactory.createJsonGenerator(new FileOutputStream(new File("E:\\workspace\\SimpleJson\\resources\\simple.json")), JsonEncoding.UTF8);
-			ObjectMapper mapper =new ObjectMapper();
-			jp.setCodec(mapper);
-			JsonNode jsonNode = jp.readValueAsTree();
-			readJsonData(jsonNode, mapper);*/
+	    	return result.toString();
 	    }
 	    
-	    static void readJsonData(JsonNode jsonNode, ObjectMapper mapper) throws IOException {
-			Iterator<Map.Entry<String, JsonNode>> ite = jsonNode.getFields();
-			boolean tempFlag = false;
-			int sumRecon = 0;
-			int senderFee = 0;
-
-			while (ite.hasNext()) {
-				Map.Entry<String, JsonNode> entry = ite.next();
-				if (entry.getKey().equalsIgnoreCase("transaction")) {
-					Iterator<Map.Entry<String, JsonNode>> transOuter = entry
-							.getValue().getFields();
-
-					while (transOuter.hasNext()) {
-						Map.Entry<String, JsonNode> entryTransOuter = transOuter
-								.next();
-						if (entryTransOuter.getKey().equalsIgnoreCase("eventType")
-								&& entryTransOuter.getValue().toString()
-										.equalsIgnoreCase("\"Authorization\"")) {
-							tempFlag = true;
-						}
-					}
-				}
-
-				if (entry.getKey().equalsIgnoreCase("fee") && tempFlag) {
-					Iterator<Map.Entry<String, JsonNode>> feeOuter = entry
-							.getValue().getFields();
-
-					while (feeOuter.hasNext()) {
-						Map.Entry<String, JsonNode> entryFeeOuter = feeOuter.next();
-						if (entryFeeOuter.getKey().equalsIgnoreCase("sender")) {
-							senderFee = entryFeeOuter.getValue().asInt();
-						}
-						if (entryFeeOuter.getKey().equalsIgnoreCase("reciver")
-								|| entryFeeOuter.getKey()
-										.equalsIgnoreCase("acqFee")
-								|| entryFeeOuter.getKey()
-										.equalsIgnoreCase("issFee")) {
-							sumRecon = sumRecon + entryFeeOuter.getValue().asInt();
-						}
-					}
-
-					tempFlag = false;
-				}
-			}
-			if (senderFee == sumRecon) {				
-				
-				JsonNode root = mapper.readTree(new File("E:\\workspace\\SimpleJson\\resources\\simple.json"));
-				String resultOriginal = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(root);
-				System.out.println("Before Update " + resultOriginal);
-
-				JsonNode nameNode = root.path("transaction");
-				((ObjectNode) nameNode).put("eventMaturity", "Reconsilation");
-				mapper.writeValue(new File("E:\\workspace\\SimpleJson\\resources\\simple.json"), root);
-				mapper.writerWithDefaultPrettyPrinter().writeValueAsString(root);
-				
-				System.out.println("Successfully");
-				
-				String resultUpdate = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(root);
-				System.out.println("After Update " + resultUpdate);
-			}
-		}
+	   
 }
 	
 	
