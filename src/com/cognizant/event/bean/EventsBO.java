@@ -59,8 +59,8 @@ public class EventsBO {
 	public String getTxnAmount() {
 		return txnAmount;
 	}
-	public void setTxnAmount(String exnAmount) {
-		this.txnAmount = exnAmount;
+	public void setTxnAmount(String txnAmount) {
+		this.txnAmount = txnAmount;
 	}
 	public String getComponent() {
 		return component;
@@ -71,6 +71,6 @@ public class EventsBO {
 	@Override
 	public String toString() {
 		return "EventsBO [MerchantName=" + MerchantName + ", MerchantNumber=" + MerchantNumber + ", crdNumber="
-				+ crdNumber + ", txnType=" + txnType + ", exnAmount=" + txnAmount + ", component=" + component + "]";
+				+ crdNumber + ", txnType=" + txnType + ", txnAmount=" + txnAmount + ", component=" + component + "]";
 	}
 }
