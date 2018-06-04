@@ -230,10 +230,10 @@ import com.cognizant.event.bean.EventsBO;
 	    				pricedAmount = treatementAmount - (treatementAmount * 0.02);
 	    			else
 	    				pricedAmount = treatementAmount - (treatementAmount * 0.05);
-	    			result.append("passed -> " + " Amount -> " + pricedAmount + " CardNumber ->  " + entry.getKey());
+	    			result.append("Passed -> " + " Amount -> " + pricedAmount + " CardNumber ->  " + entry.getKey());
 	    			
 	    		}else{
-	    			result.append("failed");
+	    			result.append("Failed -> " + " CardNumber ->  " + entry.getKey());
 	    		}
 	    		result.append("</br>");
 	    	}	
