@@ -39,7 +39,7 @@ import com.cognizant.event.bean.EventsBO;
 			events.setCrdNumber("123456789");
 			events.setMerchantName("Sainsburys");
 			events.setMerchantNumber("001");
-			events.setTxnAmount("0.50");
+			events.setTxnAmount("95.95");
 			events.setWindowId("1");
 			eventsBO.add(events);
 			
@@ -103,7 +103,7 @@ import com.cognizant.event.bean.EventsBO;
 			events1.setCrdNumber("1234567890");
 			events1.setMerchantName("Sainsburys");
 			events1.setMerchantNumber("001");
-			events1.setTxnAmount("0.2");
+			events1.setTxnAmount("99.98");
 			events1.setWindowId("1");
 			eventsBO.add(events1);
 			
@@ -165,7 +165,11 @@ import com.cognizant.event.bean.EventsBO;
 	    public String getReconsileJSON(@RequestParam(value="windowId")String windowId) throws JsonParseException, IOException
 	    {
 	        boolean tempFlag = true;
-	        String treatementTxnAmount = null;	       
+	        String treatementTxnAmount = null;
+	        String sdiTxnAmount = null;
+	        Double OrginalSDIAmount = 0.0;
+			Double treatementAmount = 0.0;
+	        Double networkFee1 = 0.0;
 	        StringBuffer result = new StringBuffer();	        
 	    	List<EventsBO> eventsBO = getReconsileData();	    	
 	    	Set<String> amount = null;  
@@ -202,6 +206,7 @@ import com.cognizant.event.bean.EventsBO;
 	    				treatementTxnAmount = entryComponentValues.getValue();
 	    			}else if(tempFlag && entryComponentValues.getKey().contains("SDI")){
 	    				tempFlag =true ;
+	    				sdiTxnAmount = entryComponentValues.getValue();
 	    				amount.add(entryComponentValues.getValue());
 	    				eventComponentTrnAmt.put(entry.getKey(), amount);
 	    			}else if(tempFlag && entryComponentValues.getKey().contains("Movement")){
@@ -222,18 +227,32 @@ import com.cognizant.event.bean.EventsBO;
 	    		}
 	    		
 	    		if(tempFlag && amount.size()==1 ){
-	    			Double treatementAmount = Double.parseDouble(treatementTxnAmount);
 	    			
-	    			Double pricedAmount = 0.0;
+	    			 OrginalSDIAmount = Double.parseDouble(sdiTxnAmount);
+	    			 treatementAmount = Double.parseDouble(treatementTxnAmount);
 	    			
-	    			if(treatementAmount < 100)
-	    				pricedAmount = treatementAmount - (treatementAmount * 0.02);
+	    			if(OrginalSDIAmount < 100)
+	    			{
+	    				networkFee1 = OrginalSDIAmount * 0.02;
+	    				if(treatementAmount.equals(OrginalSDIAmount  - networkFee1))
+	    					result.append(" Network Fee is calcukated as -> " + networkFee1 + "  and validated Treatement Transaction Amount -> " + treatementAmount + " Result : Fin Recon Passed");
+	    				else
+	    					result.append(" Network Fee is calcukated as -> " + networkFee1 + "  and validated Treatement Transaction Amount -> " + treatementAmount + " Result : Fin Recon Failed");
+	    				result.append(", Reconcilation Passed ->"  + " CardNumber ->  " + entry.getKey());
+	    			}
 	    			else
-	    				pricedAmount = treatementAmount - (treatementAmount * 0.05);
-	    			result.append("Passed -> " + " Amount -> " + pricedAmount + " CardNumber ->  " + entry.getKey());
-	    			
+	    			{
+	    				networkFee1 = OrginalSDIAmount * 0.05;
+	    				treatementAmount.equals(OrginalSDIAmount  - networkFee1);
+	    				if(treatementAmount.equals(OrginalSDIAmount  - networkFee1))
+	    					result.append(" Network Fee is calcukated as -> " + networkFee1 + "  and validated Treatement Transaction Amount -> " + treatementAmount + " Result : Fin Recon Passed");
+	    				else
+	    					result.append(" Network Fee is calcukated as -> " + networkFee1 + "  and validated Treatement Transaction Amount -> " + treatementAmount + " Result : Fin Recon Failed");
+	    				
+	    			result.append(", Reconcilation Passed ->"  + " CardNumber ->  " + entry.getKey());
+	    			}
 	    		}else{
-	    			result.append("Failed -> " + " CardNumber ->  " + entry.getKey());
+	    			result.append("Reconcilation Failed-> " + " CardNumber ->  " + entry.getKey());
 	    		}
 	    		result.append("</br>");
 	    	}	
